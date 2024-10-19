@@ -1,0 +1,19 @@
+-- Create cupcakes table
+CREATE TABLE cupcakes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    description TEXT NOT NULL
+);
+
+-- Insert sample data
+INSERT INTO cupcakes (name, description)
+VALUES
+    ('Chocolate Delight', 'Rich chocolate cupcake with ganache filling'),
+    ('Vanilla Dream', 'Classic vanilla cupcake with buttercream frosting');
+
+-- Create cart table
+CREATE TABLE cart (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cupcake_id INTEGER NOT NULL,
+    FOREIGN KEY (cupcake_id) REFERENCES cupcakes (id)
+);
