@@ -3,30 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Where is my Cupcake?</title>
+    <title>Cupcake Store</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <script src="/static/js/app.js" defer></script>
 </head>
 <body>
     <header>
-        <h1>Where is my Cupcake?</h1>
+        <h1>Welcome to the Cupcake Store</h1>
     </header>
 
     <main>
         <div class="grid-container">
-            <a href="#" class="grid-item" onclick="loadCupcakes()">Dashboards: Informações gerais</a>
-            <a href="#" class="grid-item">Veja o que seus colegas estão experimentando</a>
-            <a href="#" class="grid-item">Assinatura</a>
-            <a href="#" class="grid-item">Minhas compras</a>
-        </div>
-
-        <div id="cupcake-list"></div>
-
-        <div class="ad-section">
-            <h3>Sugestão de leitura:</h3>
-            <p>O que é Guerra e Paz? - R$ 89,90</p>
+            <div class="grid-item" onclick="openPopup('menu')">Menu</div>
+            <div class="grid-item" onclick="openPopup('cart')">Cart</div>
+            <div class="grid-item" onclick="openPopup('history')">History</div>
+            <div class="grid-item" onclick="openPopup('subscription')">Subscription</div>
         </div>
     </main>
 
-    <script src="/static/js/app.js"></script>
+    <!-- Pop-up for Menu, Cart, History, and Subscription -->
+    <div id="popup" class="popup">
+        <div id="popup-content" class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <div id="popup-body"></div>
+        </div>
+    </div>
 </body>
 </html>
