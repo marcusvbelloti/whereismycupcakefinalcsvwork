@@ -25,10 +25,10 @@ class Subscription(db.Model):
     user_name = db.Column(db.String(100), nullable=False)
     active = db.Column(db.Boolean, default=True)
 
-# Create the database tables
-@app.before_first_request
-def create_tables():
-    db.create_all()
+# Route for the home page (root)
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 # Endpoint to get the list of cupcakes (Menu)
 @app.route('/cupcakes', methods=['GET'])
@@ -128,6 +128,10 @@ def get_subscriptions():
         }
         for sub in subscriptions
     ])
+
+# Manually push context to app to create the database before first request
+with app.app_context():
+    db.create_all()
 
 # Start the Flask app
 if __name__ == '__main__':

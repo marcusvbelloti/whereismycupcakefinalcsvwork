@@ -3,8 +3,8 @@ from pydantic import BaseModel
 from typing import List
 import sqlite3
 from sqlalchemy.orm import Session
-from database import SessionLocal, engine
-from models import Cupcake, Order
+from backend.database import SessionLocal, engine
+from backend.models import Cupcake, Order
 
 app = FastAPI()
 
