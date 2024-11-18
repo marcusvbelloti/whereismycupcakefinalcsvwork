@@ -3,7 +3,7 @@ function openPopup(type) {
     const popup = document.getElementById('popup');
     const popupBody = document.getElementById('popup-body');
 
-    popupBody.innerHTML = "";  // Clear previous content
+    popupBody.innerHTML = ""; // Clear previous content
 
     if (type === 'subscription') {
         popupBody.innerHTML = `
@@ -15,7 +15,7 @@ function openPopup(type) {
             </div>
         `;
     } else if (type === 'menu') {
-        fetch('/cupcakes')
+        fetch('http://127.0.0.1:8000/api/cupcakes') // Updated endpoint
             .then(response => response.json())
             .then(cupcakes => {
                 popupBody.innerHTML = `
@@ -23,8 +23,8 @@ function openPopup(type) {
                     <ul>
                         ${cupcakes.map(cupcake => `
                             <li class="menu-item">
-                                <h3>${cupcake.name} - R$ ${cupcake.price.toFixed(2)}</h3>
-                                <p>${cupcake.description}</p>
+                                <h3>${cupcake.nome} - R$ ${cupcake.preco}</h3>
+                                <p>${cupcake.descricao}</p>
                                 <button onclick="addToCart(${cupcake.id})">Add to Cart</button>
                             </li>
                         `).join('')}
@@ -40,7 +40,7 @@ function openPopup(type) {
         loadCartItems();
     }
 
-    popup.style.display = 'flex';  // Show the popup
+    popup.style.display = 'flex'; // Show the popup
 }
 
 // Close the popup
@@ -50,12 +50,12 @@ function closePopup() {
 
 // Add a cupcake to the cart
 function addToCart(cupcakeId) {
-    fetch('/cart', {
+    fetch('http://127.0.0.1:8000/api/cart', { // Updated endpoint
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ cupcake_id: cupcakeId })
+        body: JSON.stringify({ cupcake_id: cupcakeId }) // Sending JSON
     })
     .then(response => response.json())
     .then(data => {
@@ -65,19 +65,23 @@ function addToCart(cupcakeId) {
 
 // Load cart items
 function loadCartItems() {
-    fetch('/cart')
+    fetch('http://127.0.0.1:8000/api/cart') // Updated endpoint
         .then(response => response.json())
         .then(cartItems => {
             const popupBody = document.getElementById('popup-body');
             popupBody.innerHTML = `
                 <h2>Your Cart</h2>
                 <ul>
-                    ${cartItems.map(item => `
-                        <li class="cart-item">
-                            <p>Cupcake ID: ${item.cupcake_id}</p>
-                            <button onclick="removeFromCart(${item.id})">Remove</button>
-                        </li>
-                    `).join('')}
+                    ${cartItems.map(item => {
+                        // Check if cupcake data exists
+                        const cupcake = item.cupcake || {};
+                        return `
+                            <li class="cart-item">
+                                <p>Cupcake: ${cupcake.nome || 'Unknown'} - R$ ${cupcake.preco || '0.00'}</p>
+                                <button onclick="removeFromCart(${item.id})">Remove</button>
+                            </li>
+                        `;
+                    }).join('')}
                 </ul>
                 <button onclick="completeOrder()">Complete Order</button>
                 <button onclick="cancelOrder()">Cancel Order</button>
@@ -87,7 +91,7 @@ function loadCartItems() {
 
 // Remove an item from the cart
 function removeFromCart(cartItemId) {
-    fetch(`/cart/${cartItemId}`, {
+    fetch(`http://127.0.0.1:8000/api/cart/${cartItemId}`, { // Updated endpoint
         method: 'DELETE'
     })
     .then(response => response.json())
@@ -99,7 +103,7 @@ function removeFromCart(cartItemId) {
 
 // Complete the order
 function completeOrder() {
-    fetch('/order/complete', {
+    fetch('http://127.0.0.1:8000/api/orders', { // Updated endpoint
         method: 'POST'
     })
     .then(response => response.json())
@@ -111,7 +115,7 @@ function completeOrder() {
 
 // Cancel the order
 function cancelOrder() {
-    fetch('/order/cancel', {
+    fetch('http://127.0.0.1:8000/api/orders/cancel', { // Updated endpoint
         method: 'POST'
     })
     .then(response => response.json())
@@ -125,7 +129,7 @@ function cancelOrder() {
 function subscribe() {
     const name = document.getElementById('subscription-name').value;
     if (name) {
-        alert(`Thank you for subscribing, ${name}! You will start receiving cupcakes soon.`);
+        alert(`Thank you for subscribing, ${name}! You will start receiving cupcakes very soon! Just wait in the store for someone of our staff contact you.`);
         closePopup();
     } else {
         alert('Please enter your name to subscribe.');
