@@ -17,14 +17,7 @@ def get_db():
     db = SessionLocal()
     try:
         yield db
-        items = db.execute(
-    text("""
-        SELECT cart.id, cart.cupcake_id, cupcakes.nome, cupcakes.preco
-        FROM cart
-        JOIN cupcakes ON cart.cupcake_id = cupcakes.id
-    """)
-    ).fetchall()
-        print(items)
+        # You can log or do other actions after each request if needed
     finally:
         db.close()
 
@@ -125,8 +118,6 @@ def get_cart_items(db: Session = Depends(get_db)):
         for item in items
     ]
 
-
-
 @app.delete("/api/cart/{item_id}")
 def remove_from_cart(item_id: int, db: Session = Depends(get_db)):
     # Wrap the raw SQL query with text()
@@ -136,17 +127,17 @@ def remove_from_cart(item_id: int, db: Session = Depends(get_db)):
 
 @app.post("/api/orders")
 def place_order(db: Session = Depends(get_db)):
-    # Wrap the raw SQL query with text()
+    # Reset the database by clearing the cart
     db.execute(text("DELETE FROM cart"))
     db.commit()
-    return {"message": "Order placed successfully"}
+    return {"message": "Order placed successfully and database reset"}
 
 @app.post("/api/orders/cancel")
 def cancel_order(db: Session = Depends(get_db)):
-    # Wrap the raw SQL query with text()
+    # Reset the database by clearing the cart
     db.execute(text("DELETE FROM cart"))
     db.commit()
-    return {"message": "Order canceled"}
+    return {"message": "Order canceled and database reset"}
 
 # Frontend Routes
 @app.get("/", response_class=HTMLResponse)

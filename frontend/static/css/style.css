@@ -8,8 +8,8 @@
 /* Body Styling */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
+    background-color: #fce4b5; /* A light cupcake yellow */
+    color: #3e3e3e; /* Soft dark gray for readability */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,20 +19,21 @@ body {
 
 /* Header */
 header {
-    background-color: #ff8c00;
+    background-color: #ff8c00; /* Cupcake orange */
     width: 100%;
     padding: 20px;
     text-align: center;
     color: white;
-    font-size: 24px;
+    font-size: 36px;
     font-weight: bold;
-    border-radius: 0 0 15px 15px;
+    font-family: 'Pacifico', cursive; /* Fun, handwritten font */
+    border-radius: 0 0 25px 25px;
 }
 
 /* Main Content Area */
 main {
     width: 80%;
-    max-width: 900px;
+    max-width: 1000px;
     margin: 20px;
     text-align: center;
 }
@@ -47,20 +48,27 @@ main {
 
 /* Grid Items */
 .grid-item {
-    background-color: #ffebcd;
-    border-radius: 10px;
+    background-color: #fff7e1; /* Light yellow background for grid items */
+    border-radius: 15px;
     padding: 30px;
     text-align: center;
-    font-size: 18px;
-    color: #333;
+    font-size: 22px;
+    color: #ff8c00; /* Cupcake orange */
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition: transform 0.2s, background-color 0.3s;
+    transition: transform 0.3s, background-color 0.4s ease-in-out;
+    background-size: cover;
+    background-position: center;
+    position: relative;
 }
 
 .grid-item:hover {
     transform: scale(1.05);
-    background-color: #ffca42;
+    background-color: #ffdb4d; /* Lighter yellow when hovered */
+}
+
+.grid-item:active {
+    transform: scale(0.98); /* Slight shrinking effect when clicked */
 }
 
 /* Pop-up */
@@ -75,11 +83,12 @@ main {
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    transition: all 0.3s ease;
 }
 
 .popup-content {
     background-color: white;
-    border-radius: 15px;
+    border-radius: 25px;
     padding: 30px;
     width: 80%;
     max-width: 500px;
@@ -91,15 +100,17 @@ main {
 
 .popup h2 {
     margin-bottom: 20px;
-    font-size: 24px;
-    color: #ff8c00;
+    font-size: 28px;
+    color: #ff8c00; /* Cupcake orange */
+    font-family: 'Pacifico', cursive;
 }
 
+/* Close Button */
 .close {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 30px;
+    font-size: 36px;
     cursor: pointer;
     color: #ff8c00;
 }
@@ -109,23 +120,23 @@ button {
     background-color: #ff8c00;
     border: none;
     color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 30px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #ffca42;
+    background-color: #ffca42; /* Lighter cupcake yellow */
 }
 
 /* Cart and Menu items */
 .cart-item, .menu-item {
     background-color: #fff;
     padding: 20px;
-    margin: 10px 0;
-    border-radius: 8px;
+    margin: 15px 0;
+    border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -139,17 +150,17 @@ button:hover {
 }
 
 .subscription-form input[type="text"] {
-    padding: 10px;
-    width: 80%;
-    margin: 10px 0;
-    border-radius: 5px;
+    padding: 12px;
+    width: 70%;
+    margin: 15px 0;
+    border-radius: 8px;
     border: 1px solid #ddd;
 }
 
 .subscription-form button {
     margin-top: 20px;
-    padding: 12px 25px;
+    padding: 15px 30px;
     background-color: #ff8c00;
     color: white;
-    border-radius: 5px;
+    border-radius: 8px;
 }
