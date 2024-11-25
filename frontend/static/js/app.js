@@ -15,7 +15,7 @@ function openPopup(type) {
             </div>
         `;
     } else if (type === 'menu') {
-        fetch('http://127.0.0.1:8000/api/cupcakes') // Updated endpoint
+        fetch('/api/cupcakes') // Updated endpoint
             .then(response => response.json())
             .then(cupcakes => {
                 popupBody.innerHTML = `
@@ -50,7 +50,7 @@ function closePopup() {
 
 // Add a cupcake to the cart
 function addToCart(cupcakeId) {
-    fetch('http://127.0.0.1:8000/api/cart', { // Updated endpoint
+    fetch('/api/cart', { // Updated endpoint
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ function addToCart(cupcakeId) {
 
 // Load cart items
 function loadCartItems() {
-    fetch('http://127.0.0.1:8000/api/cart') // Updated endpoint
+    fetch('/api/cart') // Updated endpoint
         .then(response => response.json())
         .then(cartItems => {
             const popupBody = document.getElementById('popup-body');
@@ -91,7 +91,7 @@ function loadCartItems() {
 
 // Remove an item from the cart
 function removeFromCart(cartItemId) {
-    fetch(`http://127.0.0.1:8000/api/cart/${cartItemId}`, { // Updated endpoint
+    fetch(`/api/cart/${cartItemId}`, { // Updated endpoint
         method: 'DELETE'
     })
     .then(response => response.json())
@@ -103,7 +103,7 @@ function removeFromCart(cartItemId) {
 
 // Complete the order
 function completeOrder() {
-    fetch('http://127.0.0.1:8000/api/orders', { // Updated endpoint
+    fetch('/api/orders', { // Updated endpoint
         method: 'POST'
     })
     .then(response => response.json())
@@ -115,7 +115,7 @@ function completeOrder() {
 
 // Cancel the order
 function cancelOrder() {
-    fetch('http://127.0.0.1:8000/api/orders/cancel', { // Updated endpoint
+    fetch('/api/orders/cancel', { // Updated endpoint
         method: 'POST'
     })
     .then(response => response.json())
