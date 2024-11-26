@@ -17,7 +17,6 @@ def get_db():
     db = SessionLocal()
     try:
         yield db
-        # You can log or do other actions after each request if needed
     finally:
         db.close()
 
@@ -31,17 +30,16 @@ async def lifespan(app: FastAPI):
                 conn.executescript(f.read())
         print("Database initialized.")
     yield  # This allows the application to run
-    # Perform any cleanup if needed here (executed on shutdown)
-    
+
 # Configure FastAPI with lifespan
 app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins or specify allowed origins
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 class CupcakeSchema(BaseModel):
@@ -60,7 +58,7 @@ class CartItemSchema(BaseModel):
 
     class Config:
         from_attributes = True
-        
+
 class OrderSchema(BaseModel):
     id: int
     status: str
@@ -68,7 +66,7 @@ class OrderSchema(BaseModel):
 
     class Config:
         from_attributes = True
-        
+
 class CartItem(BaseModel):
     cupcake_id: int
 
@@ -89,7 +87,6 @@ def get_cupcakes(db: Session = Depends(get_db)):
 
 @app.post("/api/cart")
 def add_to_cart(cart_item: CartItem, db: Session = Depends(get_db)):
-    # Use sqlalchemy.text() to wrap your raw SQL query
     db.execute(text("INSERT INTO cart (cupcake_id) VALUES (:cupcake_id)"), {"cupcake_id": cart_item.cupcake_id})
     db.commit()
     return {"message": "Cupcake added to cart"}
@@ -106,13 +103,13 @@ def get_cart_items(db: Session = Depends(get_db)):
 
     return [
         {
-            "id": item[0],  # Cart item id
-            "cupcake_id": item[1],  # Cupcake id from the cart
-            "cupcake": {  # Nested cupcake object
-                "id": item[2],  # Cupcake id
-                "nome": item[3],  # Cupcake name
-                "descricao": item[4],  # Cupcake description
-                "preco": item[5],  # Cupcake price
+            "id": item[0],
+            "cupcake_id": item[1],
+            "cupcake": {
+                "id": item[2],
+                "nome": item[3],
+                "descricao": item[4],
+                "preco": item[5],
             }
         }
         for item in items
@@ -120,21 +117,18 @@ def get_cart_items(db: Session = Depends(get_db)):
 
 @app.delete("/api/cart/{item_id}")
 def remove_from_cart(item_id: int, db: Session = Depends(get_db)):
-    # Wrap the raw SQL query with text()
     db.execute(text("DELETE FROM cart WHERE id = :id"), {"id": item_id})
     db.commit()
     return {"message": "Item removed from cart"}
 
 @app.post("/api/orders")
 def place_order(db: Session = Depends(get_db)):
-    # Reset the database by clearing the cart
     db.execute(text("DELETE FROM cart"))
     db.commit()
     return {"message": "Order placed successfully and database reset"}
 
 @app.post("/api/orders/cancel")
 def cancel_order(db: Session = Depends(get_db)):
-    # Reset the database by clearing the cart
     db.execute(text("DELETE FROM cart"))
     db.commit()
     return {"message": "Order canceled and database reset"}
@@ -144,8 +138,3 @@ def cancel_order(db: Session = Depends(get_db)):
 def serve_home():
     with open("frontend/templates/index.html", "r") as f:
         return HTMLResponse(content=f.read(), status_code=200)
-
-if __name__ == "__main__":
-    import uvicorn
-    port = int(os.environ.get("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
